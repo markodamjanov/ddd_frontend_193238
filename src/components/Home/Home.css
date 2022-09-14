@@ -1,0 +1,25 @@
+.start {
+  font-size: 2rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100%;
+  padding: 20px;
+  background: rgba(104, 199, 223, 0.95);
+  color: black;
+  text-align: center;
+  transition: 0.7s;
+  cursor: pointer;
+}
+
+.start:hover {
+  font-size: 2rem;
+  border: 1px solid black;
+  border-radius: 10px;
+  width: 100%;
+  padding: 20px;
+  background: rgba(85, 160, 179, 0.95);
+  color: black;
+  text-align: center;
+  transition: 0.7s;
+  cursor: pointer;
+}
