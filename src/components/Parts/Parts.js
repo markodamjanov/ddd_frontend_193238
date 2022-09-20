@@ -14,7 +14,7 @@ const Parts = (props) => {
 
   useEffect(() => {
     fetchParts();
-  }, [parts.length]);
+  }, [parts.lengh]);
 
   useEffect(() => {
     orderAxios.get("/checkIfOrderIsCreated").then((response) => {
@@ -27,11 +27,13 @@ const Parts = (props) => {
   });
 
   const deletePhonePart = (e) => {
-    productAxios.delete(`/delete/${e.target.id}`);
-    setParts((parts) => {
-      const partsNew = parts.filter((x) => x.id.id !== e.target.id);
-      return partsNew;
-    });
+    if (window.confirm("Are you sure you want to delete this item ?")) {
+      productAxios.delete(`/delete/${e.target.id}`);
+      setParts((parts) => {
+        const partsNew = parts.filter((x) => x.id.id !== e.target.id);
+        return partsNew;
+      });
+    }
   };
 
   return (
@@ -57,31 +59,32 @@ const Parts = (props) => {
             </h1>
           </div>
 
-          {props.createOrder.length > 0 ? (
-            <div
-              className="alert alert-danger"
-              style={{ fontWeight: "bold", fontSize: "1.3rem" }}
+          <div>
+            <Link
+              className="btn btn-primary"
+              style={{
+                padding: "20px",
+              }}
+              to="/addPhonePart"
             >
-              {props.createOrder}
-            </div>
-          ) : (
-            ""
-          )}
+              Add product
+            </Link>
+          </div>
         </div>
         <div>
           <div className="row">
-            {parts.map((item) => (
+            {parts.sort(parts.phonePartName).map((item) => (
               <div className="col-md-4 mb-4">
                 <div
                   className="card m-auto"
-                  style={{ width: "23rem", height: "20rem" }}
+                  style={{ width: "23rem", height: "35rem" }}
                   key={item.id}
                 >
-                  <div
-                    style={{ background: "#64B6C8", height: "15%" }}
-                    src="..."
+                  <img
+                    style={{ height: "50%" }}
+                    src={item.imgUrl}
                     alt="Card image cap"
-                  ></div>
+                  />
                   <div
                     className="card-body m-auto text-center d-flex align-items-center flex-column mt-3"
                     style={{
@@ -90,13 +93,26 @@ const Parts = (props) => {
                   >
                     <h5
                       className="card-title"
-                      style={{ fontSize: "2.8rem", marginBottom: "40px" }}
+                      style={{ fontSize: "1.5rem", marginBottom: "10px" }}
                     >
-                      {item.phonePartName}
+                      <span style={{ color: "lightgray", fontSize: "1.2rem" }}>
+                        Title:
+                      </span>
+                      {"    " + item.phonePartName}
                     </h5>
-                    <p className="card-text" style={{ fontSize: "2rem" }}>
-                      {item.price.amount + " " + item.price.currency}
+                    <p className="card-text" style={{ fontSize: "1rem" }}>
+                      <span style={{ color: "lightgray", fontSize: "1rem" }}>
+                        Description:
+                      </span>
+                      {"   " + item.description}
                     </p>
+                    <p className="card-text" style={{ fontSize: "1.2rem" }}>
+                      <span style={{ color: "lightgray", fontSize: "1.2rem" }}>
+                        Price:
+                      </span>
+                      {"   " + item.price.amount + " " + item.price.currency}
+                    </p>
+                    <p>{"Item Sales: " + item.numberOfSales}</p>
                   </div>
                   {isOrderCreated ? (
                     <div
@@ -106,17 +122,23 @@ const Parts = (props) => {
                       <button
                         className="btn btn-success"
                         style={{
-                          width: "76%",
+                          width: "100%",
                           marginRight: "4%",
                           fontSize: "1.2rem",
                         }}
                         onClick={() => {
-                          let phonePart = {
-                            id: item.id.id,
-                            name: item.phonePartName,
-                            price: item.price.amount,
-                          };
-                          props.addToCart(phonePart);
+                          if (
+                            window.confirm(
+                              "Do you want to add this item to the cart ?"
+                            )
+                          ) {
+                            let phonePart = {
+                              id: item.id.id,
+                              name: item.phonePartName,
+                              price: item.price.amount,
+                            };
+                            props.addToCart(phonePart);
+                          }
                         }}
                       >
                         Add to cart{" "}
@@ -132,6 +154,19 @@ const Parts = (props) => {
                           <path d="M.5 1a.5.5 0 0 0 0 1h1.11l.401 1.607 1.498 7.985A.5.5 0 0 0 4 12h1a2 2 0 1 0 0 4 2 2 0 0 0 0-4h7a2 2 0 1 0 0 4 2 2 0 0 0 0-4h1a.5.5 0 0 0 .491-.408l1.5-8A.5.5 0 0 0 14.5 3H2.89l-.405-1.621A.5.5 0 0 0 2 1H.5zm3.915 10L3.102 4h10.796l-1.313 7h-8.17zM6 14a1 1 0 1 1-2 0 1 1 0 0 1 2 0zm7 0a1 1 0 1 1-2 0 1 1 0 0 1 2 0z" />
                         </svg>
                       </button>
+                    </div>
+                  ) : (
+                    <div
+                      className="card-footer d-flex align-items-center justify-content-between"
+                      style={{ height: "27%" }}
+                    >
+                      <Link
+                        className="btn btn-primary p-2"
+                        style={{ width: "70%" }}
+                        to="/"
+                      >
+                        Create your order first
+                      </Link>
                       <button
                         className="btn btn-danger"
                         style={{ width: "20%" }}
@@ -151,12 +186,6 @@ const Parts = (props) => {
                           <path d="M6.5 1h3a.5.5 0 0 1 .5.5v1H6v-1a.5.5 0 0 1 .5-.5ZM11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3A1.5 1.5 0 0 0 5 1.5v1H2.506a.58.58 0 0 0-.01 0H1.5a.5.5 0 0 0 0 1h.538l.853 10.66A2 2 0 0 0 4.885 16h6.23a2 2 0 0 0 1.994-1.84l.853-10.66h.538a.5.5 0 0 0 0-1h-.995a.59.59 0 0 0-.01 0H11Zm1.958 1-.846 10.58a1 1 0 0 1-.997.92h-6.23a1 1 0 0 1-.997-.92L3.042 3.5h9.916Zm-7.487 1a.5.5 0 0 1 .528.47l.5 8.5a.5.5 0 0 1-.998.06L5 5.03a.5.5 0 0 1 .47-.53Zm5.058 0a.5.5 0 0 1 .47.53l-.5 8.5a.5.5 0 1 1-.998-.06l.5-8.5a.5.5 0 0 1 .528-.47ZM8 4.5a.5.5 0 0 1 .5.5v8.5a.5.5 0 0 1-1 0V5a.5.5 0 0 1 .5-.5Z" />
                         </svg>
                       </button>
-                    </div>
-                  ) : (
-                    <div className="p-4 text-center">
-                      <Link className="btn btn-primary p-2" to="/orders">
-                        Create your order first
-                      </Link>
                     </div>
                   )}
                 </div>

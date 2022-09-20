@@ -6,14 +6,18 @@ import PartFormCss from "./PartForm.css";
 const PartForm = () => {
   const [phonePartName, setPhonePartName] = useState("");
   const [phonePartPrice, setPhonePartPrice] = useState(0);
+  const [phonePartImage, setPhonePartImage] = useState("");
+  const [phonePartDescription, setPhonePartDescription] = useState("");
   const navigate = useNavigate();
 
-  const createPhonePart = (name, price) => {
+  const createPhonePart = (name, price, img, description) => {
     return productAxios
       .post("/create", null, {
         params: {
           name: name,
           price: price,
+          imgUrl: img,
+          description: description,
         },
       })
       .then((response) => {
@@ -26,7 +30,12 @@ const PartForm = () => {
 
   const onSubmitData = (e) => {
     e.preventDefault();
-    createPhonePart(phonePartName, phonePartPrice);
+    createPhonePart(
+      phonePartName,
+      phonePartPrice,
+      phonePartImage,
+      phonePartDescription
+    );
     navigate("/parts");
   };
 
@@ -66,6 +75,40 @@ const PartForm = () => {
                 id="phonePartPrice"
                 placeholder="Price..."
                 onChange={(event) => setPhonePartPrice(event.target.value)}
+              />
+            </div>
+            <div class="form-group mt-4">
+              <label
+                for="phonePartPrice"
+                className="fw-bold mb-2"
+                style={{ fontSize: "1.2rem" }}
+              >
+                Image
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="phonePartImage"
+                placeholder="Image..."
+                onChange={(event) => setPhonePartImage(event.target.value)}
+              />
+            </div>
+            <div class="form-group mt-4">
+              <label
+                for="phonePartPrice"
+                className="fw-bold mb-2"
+                style={{ fontSize: "1.2rem" }}
+              >
+                Description
+              </label>
+              <input
+                type="text"
+                class="form-control"
+                id="phonePartDescription"
+                placeholder="Description..."
+                onChange={(event) =>
+                  setPhonePartDescription(event.target.value)
+                }
               />
             </div>
             <button type="submit" class="btn btn-primary mt-4 w-100">

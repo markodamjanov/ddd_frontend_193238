@@ -1,7 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { orderAxios } from "../../custom-axios/axios";
 import HomeCss from "./Home.css";
 
 const Home = () => {
+  const navigate = useNavigate();
+
+  const createOrder = () => {
+    orderAxios.post("/create").then((response) => {});
+    navigate("/parts");
+  };
+
   return (
     <div
       className="d-flex flex-column align-items-center justify-content-center"
@@ -26,11 +34,14 @@ const Home = () => {
             We offer you the largest stock with lowest prices of original phone
             parts for smartphones.
           </p>
-          <h3 className="mt-4 start">
-            <Link className="nav-link " to="/parts">
+          <h3 className="mt-4">
+            <button className="nav-link start" onClick={createOrder}>
               Start shopping
-            </Link>
+            </button>
           </h3>
+          <p style={{ color: "gray" }}>
+            *Create order by clicking Start Shopping
+          </p>
         </div>
         <div className="col-md-4">
           <img

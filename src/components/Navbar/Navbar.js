@@ -52,15 +52,6 @@ const Navbar = () => {
                   Orders
                 </Link>
               </li>
-              <li className="nav-item">
-                <Link
-                  className="nav-link text-white text"
-                  style={{ fontSize: "1.2rem", padding: "34px 30px" }}
-                  to="/addPhonePart"
-                >
-                  Add Phone Part
-                </Link>
-              </li>
             </ul>
           </div>
         </div>

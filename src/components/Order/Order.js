@@ -69,19 +69,6 @@ const Order = () => {
 
   const OrderList = (
     <div className="container">
-      {canCreateOrder ? (
-        <button
-          className="btn btn-primary mt-4"
-          style={{
-            padding: "10px",
-          }}
-          onClick={createOrder}
-        >
-          Create your order
-        </button>
-      ) : (
-        ""
-      )}
       <table class="table mt-4">
         <thead>
           <tr>

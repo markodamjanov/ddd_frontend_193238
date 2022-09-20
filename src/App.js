@@ -8,7 +8,7 @@ import Home from "./components/Home/Home";
 import PartForm from "./components/Parts/PartForm/PartForm";
 import Cart from "./components/Cart/Cart";
 import Order from "./components/Order/Order";
-import { orderAxios } from "./custom-axios/axios";
+import { orderAxios, productAxios } from "./custom-axios/axios";
 
 const App = () => {
   const [createOrder, setCreateOrder] = useState("");
@@ -29,6 +29,11 @@ const App = () => {
           setCreateOrder("");
         }
       });
+    productAxios.post("/addSales", null, {
+      params: {
+        id: item.id,
+      },
+    });
   };
 
   return (
